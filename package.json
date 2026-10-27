@@ -1,0 +1,22 @@
+{
+  "name": "recipe-book-mern-app",
+  "version": "1.0.0",
+  "description": "Full-Stack Recipe Book Web Application built with the MERN Stack (MongoDB Atlas, Express.js, React, Node.js)",
+  "scripts": {
+    "start": "node backend/server.js",
+    "backend": "cd backend && npm run dev",
+    "frontend": "cd frontend && npm run dev",
+    "build:frontend": "cd frontend && npm run build",
+    "install:all": "cd backend && npm install && cd ../frontend && npm install"
+  },
+  "keywords": [
+    "mern",
+    "recipe-book",
+    "mongodb",
+    "express",
+    "react",
+    "node"
+  ],
+  "author": "Candidate",
+  "license": "MIT"
+}
