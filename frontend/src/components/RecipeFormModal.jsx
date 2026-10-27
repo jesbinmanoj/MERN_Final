@@ -234,13 +234,13 @@ export default function RecipeFormModal({ isOpen, onClose, onSubmit, initialData
                 <span>Ingredients <span className="required-star">*</span></span>
               </label>
               <span className="field-helper-text">
-                Enter each ingredient on a new line (e.g., "2 cups flour", "1 tsp salt")
+                Enter each ingredient on a new line
               </span>
               <textarea
                 id="recipeIngredients"
-                rows="5"
-                className={`form-textarea ${formErrors.ingredientsText ? 'input-error' : ''}`}
-                placeholder={"2 boneless chicken breasts\n2 tbsp olive oil\n3 cloves garlic, minced\n1 cup heavy cream\n1/2 cup parmesan cheese"}
+                rows="2"
+                className={`form-textarea compact-textarea ${formErrors.ingredientsText ? 'input-error' : ''}`}
+                placeholder={"2 boneless chicken breasts\n2 tbsp olive oil\n1 cup heavy cream"}
                 value={formData.ingredientsText}
                 onChange={(e) => {
                   setFormData({ ...formData, ingredientsText: e.target.value });
@@ -259,13 +259,13 @@ export default function RecipeFormModal({ isOpen, onClose, onSubmit, initialData
                 <span>Preparation Steps <span className="required-star">*</span></span>
               </label>
               <span className="field-helper-text">
-                Enter each step on a new line (in chronological order)
+                Enter each step on a new line
               </span>
               <textarea
                 id="recipeInstructions"
-                rows="5"
-                className={`form-textarea ${formErrors.instructionsText ? 'input-error' : ''}`}
-                placeholder={"Heat olive oil in a skillet over medium heat.\nSeason chicken with salt and pepper, then cook until golden brown.\nAdd minced garlic and saute until fragrant.\nPour in heavy cream and simmer until thickened.\nStir in parmesan cheese and combine with cooked pasta."}
+                rows="2"
+                className={`form-textarea compact-textarea ${formErrors.instructionsText ? 'input-error' : ''}`}
+                placeholder={"Heat olive oil in a skillet.\nCook chicken until golden brown.\nSimmer in cream and serve warm."}
                 value={formData.instructionsText}
                 onChange={(e) => {
                   setFormData({ ...formData, instructionsText: e.target.value });

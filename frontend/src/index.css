@@ -682,6 +682,67 @@ button {
 }
 
 /* Forms */
+.form-modal form {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.form-modal .modal-header {
+  padding: 1rem 1.25rem 0.75rem;
+}
+
+.form-modal .modal-title {
+  font-size: 1.3rem;
+}
+
+.form-modal .modal-subtitle {
+  font-size: 0.8rem;
+}
+
+.form-modal .modal-scrollable-content {
+  padding: 0.85rem 1.25rem;
+}
+
+.form-modal .form-field {
+  margin-bottom: 0.85rem;
+}
+
+.form-modal .form-label {
+  font-size: 0.84rem;
+  margin-bottom: 0.25rem;
+}
+
+.form-modal .field-helper-text {
+  font-size: 0.75rem;
+  margin-bottom: 0.3rem;
+}
+
+.form-modal .form-input,
+.form-modal .form-select {
+  padding: 0.5rem 0.8rem;
+  font-size: 0.88rem;
+}
+
+.compact-textarea {
+  height: 64px !important;
+  min-height: 52px !important;
+  max-height: 130px !important;
+  padding: 0.5rem 0.8rem !important;
+  font-size: 0.86rem !important;
+  line-height: 1.4 !important;
+  resize: vertical;
+}
+
+.form-modal .modal-footer {
+  padding: 0.75rem 1.25rem;
+  background-color: var(--bg-subtle);
+  border-top: 1px solid var(--border-color);
+  flex-shrink: 0;
+}
+
 .form-field {
   margin-bottom: 1.25rem;
 }
