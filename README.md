@@ -2,6 +2,8 @@
 
 A modern, full-stack **Recipe Book** web application built with the **MERN Stack** (MongoDB, Express.js, React.js, Node.js). This application enables users to manage their favorite recipes, organize them by meal categories, track cooking durations, and view detailed step-by-step culinary instructions.
 
+> 🌐 **Live Demo (GitHub Pages):** [https://jesbinmanoj.github.io/MERN_Final/](https://jesbinmanoj.github.io/MERN_Final/)
+
 ---
 
 ## 📋 Evaluation Checklist & Verification
