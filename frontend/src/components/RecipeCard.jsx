@@ -1,5 +1,7 @@
-import React from 'react';
-import { Clock, Eye, Edit3, Trash2, ChefHat } from 'lucide-react';
+import React, { useState } from 'react';
+import { Clock, Eye, Edit3, Trash2, ChefHat, RotateCw } from 'lucide-react';
+import RotatingPlate from './RotatingPlate';
+import { getRecipeFoodImage } from '../utils/foodImages';
 
 const categoryColorMap = {
   Breakfast: 'badge-breakfast',
@@ -10,20 +12,47 @@ const categoryColorMap = {
   Beverage: 'badge-beverage'
 };
 
-export default function RecipeCard({ recipe, onViewDetails, onEdit, onDelete }) {
+export default function RecipeCard({ recipe, onViewDetails, onEdit, onDelete, onSelectFeatured }) {
+  const [spinTrigger, setSpinTrigger] = useState(0);
   const badgeClass = categoryColorMap[recipe.category] || 'badge-default';
+  const foodImage = getRecipeFoodImage(recipe.name, recipe.category, recipe.image);
+
+  const handleCardClick = () => {
+    setSpinTrigger((prev) => prev + 1);
+    if (onSelectFeatured) {
+      onSelectFeatured(recipe);
+    }
+  };
 
   return (
-    <article className="recipe-card">
-      <div className="card-top-accent"></div>
-      
+    <article className="recipe-card interactive-dish-card" onClick={handleCardClick}>
+      {/* Top overflowing circular rotating plate */}
+      <div className="card-plate-stage">
+        <RotatingPlate
+          src={foodImage}
+          alt={recipe.name}
+          size="sm"
+          className="card-overflow-plate"
+        />
+        <button 
+          className="plate-quick-spin-btn" 
+          onClick={(e) => {
+            e.stopPropagation();
+            setSpinTrigger((prev) => prev + 1);
+          }}
+          title="Spin Plate"
+        >
+          <RotateCw size={13} />
+        </button>
+      </div>
+
       <div className="card-body">
         <div className="card-meta-header">
           <span className={`category-badge ${badgeClass}`}>
             {recipe.category}
           </span>
           <div className="cooking-time-indicator">
-            <Clock size={15} />
+            <Clock size={14} />
             <span>{recipe.cookingTime} mins</span>
           </div>
         </div>
@@ -33,12 +62,12 @@ export default function RecipeCard({ recipe, onViewDetails, onEdit, onDelete }) 
         </h3>
 
         <div className="recipe-snippet">
-          <ChefHat size={15} className="snippet-icon" />
+          <ChefHat size={14} className="snippet-icon" />
           <span>{recipe.ingredients?.length || 0} Ingredients • {recipe.instructions?.length || 0} Steps</span>
         </div>
       </div>
 
-      <div className="card-footer">
+      <div className="card-footer" onClick={(e) => e.stopPropagation()}>
         <button 
           className="btn-card-action btn-view"
           onClick={() => onViewDetails(recipe)}

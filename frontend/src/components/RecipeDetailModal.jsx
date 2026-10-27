@@ -1,8 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { X, Clock, ChefHat, Check, BookmarkCheck, Sparkles, Edit3 } from 'lucide-react';
+import { X, Clock, ChefHat, Check, BookmarkCheck, Edit3, RotateCw } from 'lucide-react';
+import RotatingPlate from './RotatingPlate';
+import { getRecipeFoodImage } from '../utils/foodImages';
 
 export default function RecipeDetailModal({ recipe, onClose, onEdit }) {
   const [checkedIngredients, setCheckedIngredients] = useState({});
+  const [spinCount, setSpinCount] = useState(0);
 
   useEffect(() => {
     const handleKeyDown = (e) => {
@@ -20,6 +23,8 @@ export default function RecipeDetailModal({ recipe, onClose, onEdit }) {
       [idx]: !prev[idx]
     }));
   };
+
+  const foodImage = getRecipeFoodImage(recipe.name, recipe.category, recipe.image);
 
   return (
     <div className="modal-backdrop" onClick={onClose}>
@@ -46,6 +51,25 @@ export default function RecipeDetailModal({ recipe, onClose, onEdit }) {
             <X size={20} />
           </button>
         </header>
+
+        {/* Top Dish Showcase with 360° Rotating Plate */}
+        <div className="detail-plate-hero">
+          <RotatingPlate
+            key={`detail-plate-${spinCount}`}
+            src={foodImage}
+            alt={recipe.name}
+            size="lg"
+            className="detail-hero-plate"
+          />
+          <button 
+            className="plate-spin-control-btn"
+            onClick={() => setSpinCount((c) => c + 1)}
+            title="Spin Dish"
+          >
+            <RotateCw size={14} />
+            <span>Click Plate to Spin</span>
+          </button>
+        </div>
 
         <div className="modal-scrollable-content detail-content">
           {/* Ingredients Section */}

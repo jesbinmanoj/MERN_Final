@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { X, Save, AlertCircle, Clock, Utensils, ListOrdered, Tag } from 'lucide-react';
+import { X, Save, AlertCircle, Clock, Utensils, ListOrdered, Tag, Sparkles, Image as ImageIcon } from 'lucide-react';
+import RotatingPlate from './RotatingPlate';
+import { getRecipeFoodImage } from '../utils/foodImages';
 
 const CATEGORIES = ['Breakfast', 'Lunch', 'Dinner', 'Snack', 'Dessert', 'Beverage'];
 
@@ -11,7 +13,8 @@ export default function RecipeFormModal({ isOpen, onClose, onSubmit, initialData
     category: 'Dinner',
     cookingTime: '',
     ingredientsText: '',
-    instructionsText: ''
+    instructionsText: '',
+    image: ''
   });
 
   const [formErrors, setFormErrors] = useState({});
@@ -28,7 +31,8 @@ export default function RecipeFormModal({ isOpen, onClose, onSubmit, initialData
           : (initialData.ingredients || ''),
         instructionsText: Array.isArray(initialData.instructions)
           ? initialData.instructions.join('\n')
-          : (initialData.instructions || '')
+          : (initialData.instructions || ''),
+        image: initialData.image || ''
       });
       setFormErrors({});
     } else {
@@ -37,7 +41,8 @@ export default function RecipeFormModal({ isOpen, onClose, onSubmit, initialData
         category: 'Dinner',
         cookingTime: '',
         ingredientsText: '',
-        instructionsText: ''
+        instructionsText: '',
+        image: ''
       });
       setFormErrors({});
     }
@@ -54,6 +59,9 @@ export default function RecipeFormModal({ isOpen, onClose, onSubmit, initialData
   }, [isOpen, isSubmitting, onClose]);
 
   if (!isOpen) return null;
+
+  // Live auto-detected rotating food plate image
+  const resolvedFoodImage = getRecipeFoodImage(formData.name, formData.category, formData.image);
 
   const validate = () => {
     const errors = {};
@@ -101,7 +109,8 @@ export default function RecipeFormModal({ isOpen, onClose, onSubmit, initialData
         category: formData.category,
         cookingTime: Math.round(timeNum),
         ingredients,
-        instructions
+        instructions,
+        image: resolvedFoodImage
       }
     };
   };
@@ -154,6 +163,25 @@ export default function RecipeFormModal({ isOpen, onClose, onSubmit, initialData
           </button>
         </header>
 
+        {/* Live Rotating Dish Preview Header */}
+        <div className="form-dish-live-preview">
+          <RotatingPlate
+            src={resolvedFoodImage}
+            alt={formData.name || 'Dish Preview'}
+            size="md"
+            className="live-form-plate"
+          />
+          <div className="preview-label">
+            <Sparkles size={13} />
+            <span>
+              {formData.name.trim() 
+                ? `Dish Preview: "${formData.name.trim()}"`
+                : 'Type dish name (e.g., Steak, Pizza, Ramen) to auto-match plate'
+              }
+            </span>
+          </div>
+        </div>
+
         <form onSubmit={handleSubmit} noValidate>
           <div className="modal-scrollable-content form-content">
             {formErrors.submit && (
@@ -172,7 +200,7 @@ export default function RecipeFormModal({ isOpen, onClose, onSubmit, initialData
                 id="recipeName"
                 type="text"
                 className={`form-input ${formErrors.name ? 'input-error' : ''}`}
-                placeholder="e.g. Creamy Tuscan Garlic Chicken"
+                placeholder="e.g. Ribeye Steak with Herb Butter"
                 value={formData.name}
                 onChange={(e) => {
                   setFormData({ ...formData, name: e.target.value });
@@ -214,7 +242,7 @@ export default function RecipeFormModal({ isOpen, onClose, onSubmit, initialData
                   min="1"
                   step="1"
                   className={`form-input ${formErrors.cookingTime ? 'input-error' : ''}`}
-                  placeholder="e.g. 30"
+                  placeholder="e.g. 20"
                   value={formData.cookingTime}
                   onChange={(e) => {
                     setFormData({ ...formData, cookingTime: e.target.value });
@@ -240,7 +268,7 @@ export default function RecipeFormModal({ isOpen, onClose, onSubmit, initialData
                 id="recipeIngredients"
                 rows="2"
                 className={`form-textarea compact-textarea ${formErrors.ingredientsText ? 'input-error' : ''}`}
-                placeholder={"2 boneless chicken breasts\n2 tbsp olive oil\n1 cup heavy cream"}
+                placeholder={"400g Ribeye steak\n2 tbsp butter\n3 cloves garlic, crushed\nFresh rosemary sprig"}
                 value={formData.ingredientsText}
                 onChange={(e) => {
                   setFormData({ ...formData, ingredientsText: e.target.value });
@@ -265,7 +293,7 @@ export default function RecipeFormModal({ isOpen, onClose, onSubmit, initialData
                 id="recipeInstructions"
                 rows="2"
                 className={`form-textarea compact-textarea ${formErrors.instructionsText ? 'input-error' : ''}`}
-                placeholder={"Heat olive oil in a skillet.\nCook chicken until golden brown.\nSimmer in cream and serve warm."}
+                placeholder={"Season steak generously with salt and pepper.\nSear in hot cast-iron skillet for 3 mins each side.\nBaste with butter, garlic, and rosemary.\nRest for 5 minutes before slicing."}
                 value={formData.instructionsText}
                 onChange={(e) => {
                   setFormData({ ...formData, instructionsText: e.target.value });

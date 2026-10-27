@@ -42,6 +42,10 @@ const RecipeSchema = new mongoose.Schema(
       type: Number,
       required: [true, 'Cooking time is required'],
       min: [1, 'Cooking time must be a positive number greater than 0 minutes']
+    },
+    image: {
+      type: String,
+      default: ''
     }
   },
   {

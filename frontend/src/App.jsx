@@ -4,9 +4,10 @@ import RecipeCard from './components/RecipeCard';
 import RecipeDetailModal from './components/RecipeDetailModal';
 import RecipeFormModal from './components/RecipeFormModal';
 import DeleteConfirmModal from './components/DeleteConfirmModal';
+import FeaturedDishShowcase from './components/FeaturedDishShowcase';
 import Toast from './components/Toast';
 import { recipeApi } from './services/api';
-import { ChefHat, Plus, AlertCircle, RefreshCw, CookingPot } from 'lucide-react';
+import { Plus, AlertCircle, RefreshCw, CookingPot } from 'lucide-react';
 
 export default function App() {
   const [recipes, setRecipes] = useState([]);
@@ -58,7 +59,7 @@ export default function App() {
         showToast('success', `Recipe "${recipeData.name}" updated successfully!`);
       } else {
         await recipeApi.create(recipeData);
-        showToast('success', `Recipe "${recipeData.name}" added to your collection!`);
+        showToast('success', `Recipe "${recipeData.name}" added with matched dish plate!`);
       }
       // Automatic refresh of recipes list without manual page reload
       await fetchRecipesList();
@@ -123,15 +124,23 @@ export default function App() {
           </div>
         )}
 
+        {/* 360° Rotating Featured Showcase Section */}
+        {!loading && recipes.length > 0 && !searchTerm && activeCategory === 'All' && (
+          <FeaturedDishShowcase
+            recipes={recipes}
+            onViewDetails={(rec) => setDetailRecipe(rec)}
+          />
+        )}
+
         {/* Section title & count */}
         <div className="section-toolbar">
           <div>
             <h2 className="section-title">
-              {activeCategory === 'All' ? 'All Recipes' : `${activeCategory} Recipes`}
+              {activeCategory === 'All' ? 'All Culinary Creations' : `${activeCategory} Recipes`}
             </h2>
             <p className="section-subtitle">
               Showing {recipes.length} delicious {recipes.length === 1 ? 'recipe' : 'recipes'}
-              {searchTerm ? ` matching "${searchTerm}"` : ''}
+              {searchTerm ? ` matching "${searchTerm}"` : ''} • Click dish plates to spin!
             </p>
           </div>
         </div>
@@ -175,7 +184,7 @@ export default function App() {
           </div>
         )}
 
-        {/* Recipe Grid */}
+        {/* Recipe Grid with Rotating Plates */}
         {!loading && recipes.length > 0 && (
           <div className="recipes-grid">
             {recipes.map((recipe) => (

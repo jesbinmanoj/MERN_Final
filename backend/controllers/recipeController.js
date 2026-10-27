@@ -215,7 +215,7 @@ exports.getRecipeById = async (req, res) => {
  */
 exports.createRecipe = async (req, res) => {
   try {
-    const { name, category, ingredients, instructions, cookingTime } = req.body;
+    const { name, category, ingredients, instructions, cookingTime, image } = req.body;
 
     // Field-level validations
     if (!name || !name.trim()) {
@@ -263,7 +263,8 @@ exports.createRecipe = async (req, res) => {
         category,
         ingredients: cleanedIngredients,
         instructions: cleanedInstructions,
-        cookingTime: Math.round(parsedCookingTime)
+        cookingTime: Math.round(parsedCookingTime),
+        image: image || ''
       });
 
       const savedRecipe = await newRecipe.save();
@@ -283,6 +284,7 @@ exports.createRecipe = async (req, res) => {
       ingredients: cleanedIngredients,
       instructions: cleanedInstructions,
       cookingTime: Math.round(parsedCookingTime),
+      image: image || '',
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString()
     };
@@ -317,7 +319,7 @@ exports.createRecipe = async (req, res) => {
 exports.updateRecipe = async (req, res) => {
   try {
     const { id } = req.params;
-    const { name, category, ingredients, instructions, cookingTime } = req.body;
+    const { name, category, ingredients, instructions, cookingTime, image } = req.body;
 
     if (!name || !name.trim()) {
       return res.status(400).json({
@@ -366,15 +368,18 @@ exports.updateRecipe = async (req, res) => {
         });
       }
 
+      const updatePayload = {
+        name: name.trim(),
+        category,
+        ingredients: cleanedIngredients,
+        instructions: cleanedInstructions,
+        cookingTime: Math.round(parsedCookingTime)
+      };
+      if (image) updatePayload.image = image;
+
       const updatedRecipe = await Recipe.findByIdAndUpdate(
         id,
-        {
-          name: name.trim(),
-          category,
-          ingredients: cleanedIngredients,
-          instructions: cleanedInstructions,
-          cookingTime: Math.round(parsedCookingTime)
-        },
+        updatePayload,
         { new: true, runValidators: true }
       );
 
@@ -408,6 +413,7 @@ exports.updateRecipe = async (req, res) => {
       ingredients: cleanedIngredients,
       instructions: cleanedInstructions,
       cookingTime: Math.round(parsedCookingTime),
+      image: image || mockStore[index].image || '',
       updatedAt: new Date().toISOString()
     };
 
