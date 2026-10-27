@@ -5,6 +5,8 @@ import RecipeDetailModal from './components/RecipeDetailModal';
 import RecipeFormModal from './components/RecipeFormModal';
 import DeleteConfirmModal from './components/DeleteConfirmModal';
 import FeaturedDishShowcase from './components/FeaturedDishShowcase';
+import FoodSplashIntro from './components/FoodSplashIntro';
+import FloatingFoodBackground from './components/FloatingFoodBackground';
 import Toast from './components/Toast';
 import { recipeApi } from './services/api';
 import { Plus, AlertCircle, RefreshCw, CookingPot } from 'lucide-react';
@@ -13,6 +15,9 @@ export default function App() {
   const [recipes, setRecipes] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+
+  // 3D Food Splash Animation State (triggers on initial site opening)
+  const [showSplashIntro, setShowSplashIntro] = useState(true);
 
   // Filters
   const [searchTerm, setSearchTerm] = useState('');
@@ -101,6 +106,14 @@ export default function App() {
 
   return (
     <div className="app-layout">
+      {/* 3D Food Splash Animation on initial site opening */}
+      {showSplashIntro && (
+        <FoodSplashIntro onComplete={() => setShowSplashIntro(false)} />
+      )}
+
+      {/* Floating Culinary Background Filling All Margins and Whitespace */}
+      <FloatingFoodBackground />
+
       <Header
         onAddNew={openAddModal}
         searchTerm={searchTerm}
@@ -108,6 +121,7 @@ export default function App() {
         activeCategory={activeCategory}
         onCategoryChange={setActiveCategory}
         recipeCount={recipes.length}
+        onReplaySplash={() => setShowSplashIntro(true)}
       />
 
       <main className="main-content container">

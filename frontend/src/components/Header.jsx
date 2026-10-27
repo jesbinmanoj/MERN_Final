@@ -1,5 +1,5 @@
 import React from 'react';
-import { UtensilsCrossed, Plus, Search } from 'lucide-react';
+import { UtensilsCrossed, Plus, Search, Sparkles } from 'lucide-react';
 
 export default function Header({ 
   onAddNew, 
@@ -7,7 +7,8 @@ export default function Header({
   onSearchChange, 
   activeCategory, 
   onCategoryChange,
-  recipeCount 
+  recipeCount,
+  onReplaySplash
 }) {
   const categories = ['All', 'Breakfast', 'Lunch', 'Dinner', 'Snack', 'Dessert'];
 
@@ -20,14 +21,23 @@ export default function Header({
           </div>
           <div>
             <h1 className="brand-title">CulinaryCraft</h1>
-            <p className="brand-subtitle">Personal Recipe Collection & Planner</p>
+            <p className="brand-subtitle">3D Interactive Recipe Collection & Planner</p>
           </div>
         </div>
 
-        <button className="btn-primary" onClick={onAddNew}>
-          <Plus size={18} />
-          <span>Add Recipe</span>
-        </button>
+        <div className="header-actions">
+          {onReplaySplash && (
+            <button className="btn-splash-replay" onClick={onReplaySplash} title="Replay 3D Food Splash Effect">
+              <Sparkles size={16} className="sparkle-anim" />
+              <span>3D Splash</span>
+            </button>
+          )}
+
+          <button className="btn-primary" onClick={onAddNew}>
+            <Plus size={18} />
+            <span>Add Recipe</span>
+          </button>
+        </div>
       </div>
 
       <div className="header-controls container">
